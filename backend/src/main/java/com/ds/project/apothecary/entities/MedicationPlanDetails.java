@@ -60,4 +60,6 @@ public class MedicationPlanDetails {
      */
     private Integer
             intakeInterval;
+
+    private Integer intakeIntervalEnd;
 }

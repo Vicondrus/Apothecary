@@ -35,6 +35,8 @@ public class MedicationPlanDetailsDto {
     private Integer
             intakeInterval;
 
+    private Integer intakeIntervalEnd;
+
     /**
      * Instantiates a new Medication plan details dto.
      *
@@ -48,5 +50,6 @@ public class MedicationPlanDetailsDto {
                 medicationPlanDetails.getIntakeInterval();
         this.medication =
                 new MedicationDto(medicationPlanDetails.getMedication());
+        this.intakeIntervalEnd = medicationPlanDetails.getIntakeIntervalEnd();
     }
 }
