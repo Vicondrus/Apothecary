@@ -1,0 +1,80 @@
+stages:
+  - build-backend
+  - test-backend
+  - checkstyle-backend
+  - deploy-backend
+  - build-frontend
+  - deploy-frontend
+
+build-backend:
+  stage: build-backend
+  image: maven:3.3.9-jdk-8
+  script:
+    - cd ./backend
+    - mvn clean package
+
+test-backend:
+  stage: test-backend
+  image: maven:3.3.9-jdk-8
+  script:
+    - echo "Test app"
+    - cd ./backend
+    - mvn test && mvn jacoco:report
+    - cat target/site/jacoco/index.html | grep -o '.*'
+  coverage: "/Total.*?([0-9]{1-3})%/"
+
+checkstyle-backend:
+  stage: checkstyle-backend
+  image: maven:3.3.9-jdk-8
+  script:
+    - echo "Checkstyle app"
+    - cd ./backend
+    - mvn checkstyle:check
+
+variables:
+  APP_NAME: apothecary-backend
+  DB_IP: ec2-54-217-236-206.eu-west-1.compute.amazonaws.com
+  DB_PORT: 5432
+  DB_USER: flzgkzhtagcltj
+  DB_PASSWORD: 86b19510c6ebc1683adb783ae191c5e0331713db7ed57d900ae994f3e2d34331
+  DB_DBNAME: d6ukt0q4cpl8k6
+  CI: ""
+
+deploy-backend:
+  stage: deploy-backend
+  image: ruby:2.4
+  script:
+    - cd ./backend
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=apothecary-backend --api-key=$HEROKU_API_KEY
+  only:
+    - production
+
+cache:
+  paths:
+    - node_modules/
+
+build-frontend:
+  stage: build-frontend
+  image: node:11
+  script:
+    - cd ./frontend
+    - npm install --progress=false
+    - npm run build
+
+deploy-frontend:
+  stage: deploy-frontend
+  image: ruby:2.4
+  script:
+    - cd ./frontend
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=apothecary-frontend --api-key=$HEROKU_API_KEY --skip_cleanup
+  environment:
+    name: staging
+    url: https://apothecary-frontend.herokuapp.com/
+  only:
+    - production

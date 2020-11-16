@@ -1,0 +1,89 @@
+stages:
+  - test
+  - checkstyle
+  - build-backend
+  - deploy-backend
+  - build-frontend
+  - deploy-frontend
+
+
+test:
+  stage: test
+  image: maven:3.3.9-jdk-8
+  script:
+    - cd ./backend
+    - echo "Test DEMO app"
+    - mvn test && mvn jacoco:report
+    - cat target/site/jacoco/index.html | grep -o '.*'
+  coverage: "/Total.*?([0-9]{1,3})%/"
+
+
+checkstyle:
+  stage: checkstyle
+  image: maven:3.3.9-jdk-8
+  script:
+    - cd ./backend
+    - echo "Checkstyle DEMO app"
+    - mvn checkstyle:check
+
+build-backend:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build-backend
+  script:
+    - cd ./backend
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+variables:
+  APP_NAME_BACKEND: apothecary-backend
+  APP_NAME_FRONTEND: apothecary-frontend
+
+deploy-backend:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: deploy-backend
+  only:
+    - docker_production
+  script:
+    - cd ./backend
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:latest $HEROKU_REGISTRY_IMAGE_BACKEND:latest
+    - docker login --username=_ --password=$HEROKU_API_KEY $HEROKU_REGISTRY
+    - docker push $HEROKU_REGISTRY_IMAGE_BACKEND:latest
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $APP_NAME_BACKEND
+
+build-frontend:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build-frontend
+  script:
+    - cd ./frontend
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+deploy-frontend:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: deploy-frontend
+  only:
+    - docker_production
+  script:
+    - cd ./backend
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:latest $HEROKU_REGISTRY_IMAGE_FRONTEND:latest
+    - docker login --username=_ --password=$HEROKU_API_KEY $HEROKU_REGISTRY
+    - docker push $HEROKU_REGISTRY_IMAGE_FRONTEND:latest
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_API_KEY wingrunr21/alpine-heroku-cli container:release web --app $APP_NAME_FRONTEND

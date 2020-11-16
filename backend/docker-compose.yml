@@ -1,0 +1,33 @@
+version: "3.0"
+services:
+#  db:
+#    container_name: "apothecary_db2"
+#    image: postgres:12.3
+#    ports:
+#      - 5432:5432
+#    env_file:
+#      - .db.env
+#    volumes:
+#      - dbdata:/var/lib/pgsql/data
+
+  tomcat-db-api:
+    image: apothecary_backend
+#    depends_on:
+#      - rabbitmq
+    ports:
+      - 8080:8080
+#    links:
+#      - "rabbitmq"
+#    environment:
+#      RABBIT_HOST: rabbitmq
+
+
+#  rabbitmq:
+#    container_name: "rabbitmq"
+#    image: rabbitmq:management
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+
+volumes:
+  dbdata:

@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+
+  react:
+    image: apothecary_frontend
+    ports:
+      - 80:80
