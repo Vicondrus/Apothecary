@@ -44,7 +44,8 @@ class CreateMedicationPlan extends Component {
                 id: x[0],
                 name: x[1]
             },
-            intakeInterval: this.state.intakeInterval
+            intakeInterval: this.state.intakeInterval,
+            intakeIntervalEnd: this.state.intakeIntervalEnd
         }
         const list = this.state.medicationDetails;
         list.push(obj);
