@@ -1,5 +1,7 @@
 package com.ds.project.apothecary;
 
+import com.ds.project.apothecary.services.PillBoxService;
+import com.ds.project.apothecary.services.implementations.PillBoxServiceImpl;
 import com.ds.project.apothecary.services.implementations.Receiver;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -9,11 +11,14 @@ import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
+import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
+import org.springframework.remoting.rmi.RmiServiceExporter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -107,5 +112,12 @@ public class ApothecaryApplication implements RabbitListenerConfigurer {
                         .allowedOrigins("*").allowedMethods("*");
             }
         };
+    }
+
+    @Bean(name = "/pillbox") HttpInvokerServiceExporter accountService() {
+        HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
+        exporter.setService( new PillBoxServiceImpl() );
+        exporter.setServiceInterface( PillBoxService.class );
+        return exporter;
     }
 }

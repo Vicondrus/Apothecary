@@ -122,7 +122,8 @@ public class WebSecurityConfig
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/websocket-notifications/**")
+                .antMatchers("/auth/**", "/websocket-notifications/**",
+                        "/pillbox/**")
                 .permitAll()
                 .antMatchers("/medications/**", "/caregivers/**",
                         "/doctors/**", "/addresses/**")
