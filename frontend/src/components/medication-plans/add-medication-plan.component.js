@@ -10,6 +10,7 @@ class CreateMedicationPlan extends Component {
         this.onChangeStart = this.onChangeStart.bind(this);
         this.onChangeEnd = this.onChangeEnd.bind(this);
         this.onChangeIntakeInterval = this.onChangeIntakeInterval.bind(this);
+        this.onChangeIntakeIntervalEnd = this.onChangeIntakeIntervalEnd.bind(this);
         this.saveMedicationPlan = this.saveMedicationPlan.bind(this);
         this.newMedicationPlan = this.newMedicationPlan.bind(this);
         this.populateMedications = this.populateMedications.bind(this);
@@ -23,6 +24,7 @@ class CreateMedicationPlan extends Component {
             medicationDetails: [],
             selectedMed: null,
             intakeInterval: null,
+            intakeIntervalEnd: null,
 
             medications: [],
 
@@ -60,6 +62,12 @@ class CreateMedicationPlan extends Component {
     onChangeIntakeInterval(e) {
         this.setState({
             intakeInterval: e.target.value
+        });
+    }
+
+    onChangeIntakeIntervalEnd(e) {
+        this.setState({
+            intakeIntervalEnd: e.target.value
         });
     }
 
@@ -201,7 +209,7 @@ class CreateMedicationPlan extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="intakeInterval">Intake interval</label>
+                            <label htmlFor="intakeInterval">Intake interval start (hours)</label>
                             <input
                                 type="int"
                                 className="form-control"
@@ -210,6 +218,19 @@ class CreateMedicationPlan extends Component {
                                 value={this.state.intakeInterval}
                                 onChange={this.onChangeIntakeInterval}
                                 name="intakeInterval"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="intakeIntervalEnd">Intake interval end (hours)</label>
+                            <input
+                                type="int"
+                                className="form-control"
+                                id="intakeIntervalEnd"
+                                required
+                                value={this.state.intakeIntervalEnd}
+                                onChange={this.onChangeIntakeIntervalEnd}
+                                name="intakeIntervalEnd"
                             />
                         </div>
 
@@ -230,7 +251,7 @@ class CreateMedicationPlan extends Component {
                                             className="list-group-item-secondary"
                                             key={index}
                                         >
-                                            {entry.medication.name} to be taken every {entry.intakeInterval} hours
+                                            {entry.medication.name} to be taken between {entry.intakeInterval} and {entry.intakeIntervalEnd} hours
                                         </li>
                                     ))}
                             </ul>

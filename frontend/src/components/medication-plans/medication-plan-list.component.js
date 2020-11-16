@@ -161,7 +161,7 @@ class MedicationPlanList extends Component {
                                             className="list-group-item-secondary"
                                             key={index}
                                         >
-                                            {entry.medication.name} to be taken every {entry.intakeInterval} hours
+                                            {entry.medication.name} to be taken between {entry.intakeInterval} and {entry.intakeIntervalEnd} hours
                                         </li>
                                     ))}
                             </ul>
