@@ -100,6 +100,10 @@ public class MedicationPlanServiceImpl
                                     medicationPlanDetails.setIntakeInterval(
                                             medicationPlanDetailsDto
                                                     .getIntakeInterval());
+                                    medicationPlanDetails.
+                                            setIntakeIntervalEnd(
+                                                    medicationPlanDetailsDto.
+                                                            getIntakeIntervalEnd());
                                     medicationPlanDetails
                                             .setMedicationPlan(medicationPlan);
                                     medicationPlanDetails.setMedication(
