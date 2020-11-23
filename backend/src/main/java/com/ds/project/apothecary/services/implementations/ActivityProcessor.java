@@ -4,7 +4,6 @@ import com.ds.project.apothecary.controllers.SocketController;
 import com.ds.project.apothecary.dtos.ActivityDto;
 import com.ds.project.apothecary.dtos.BareUserDto;
 import com.ds.project.apothecary.dtos.NotificationDto;
-import com.ds.project.apothecary.dtos.UserDto;
 import com.ds.project.apothecary.entities.AnomalousActivity;
 import com.ds.project.apothecary.entities.Patient;
 import com.ds.project.apothecary.repositories.AnomalousActivityRepository;
@@ -16,6 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 
+/**
+ * The type Activity processor.
+ */
 @Service
 public class ActivityProcessor {
 
@@ -29,6 +31,13 @@ public class ActivityProcessor {
     private final double OUTDOOR_PERIOD_HOURS_ANOMALY = 5.0;
     private final double BATHROOM_PERIOD_MINUTES_ANOMALY = 30.0;
 
+    /**
+     * Instantiates a new Activity processor.
+     *
+     * @param anomalousActivityRepository the anomalous activity repository
+     * @param patientRepository           the patient repository
+     * @param socketController            the socket controller
+     */
     public ActivityProcessor(
             AnomalousActivityRepository anomalousActivityRepository,
             PatientRepository patientRepository,
@@ -43,6 +52,11 @@ public class ActivityProcessor {
         return Arrays.stream(items).anyMatch(inputStr.toLowerCase()::contains);
     }
 
+    /**
+     * Process activity.
+     *
+     * @param activity the activity
+     */
     public void processActivity(ActivityDto activity) {
         Patient patient =
                 patientRepository.findById(activity.getPatientId())

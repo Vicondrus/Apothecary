@@ -1,8 +1,8 @@
 package com.ds.project.apothecary.dtos;
 
-import com.ds.project.apothecary.entities.MedicationPlan;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The type Medication plan dto.
@@ -21,9 +20,10 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class MedicationPlanDto implements Serializable {
-
     private static final long serialVersionUID = 3445194553536051405L;
+
     /**
      * The Id.
      */
@@ -54,26 +54,6 @@ public class MedicationPlanDto implements Serializable {
      */
     private List<MedicationPlanDetailsDto>
             medications;
-
-    /**
-     * Instantiates a new Medication plan dto.
-     *
-     * @param medicationPlan the medication plan
-     */
-    public MedicationPlanDto(final MedicationPlan medicationPlan) {
-        this.id =
-                medicationPlan.getId();
-        this.patient =
-                new BareUserDto(medicationPlan.getPatient());
-        this.periodStart =
-                medicationPlan.getPeriodStart();
-        this.periodEnd =
-                medicationPlan.getPeriodEnd();
-        this.medications =
-                medicationPlan.getMedicationPlanDetailsSet().stream()
-                        .map(MedicationPlanDetailsDto::new)
-                        .collect(Collectors.toList());
-    }
 
     public void addMedicationPlanDetailsToList(
             MedicationPlanDetailsDto medicationPlanDetailsDto) {

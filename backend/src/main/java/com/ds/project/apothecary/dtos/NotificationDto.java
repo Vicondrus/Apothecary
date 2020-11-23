@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The type Notification dto.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,8 +18,14 @@ import lombok.Setter;
 @Builder
 public class NotificationDto {
 
+    /**
+     * The Activity.
+     */
     ActivityDto activity;
 
+    /**
+     * The Patient.
+     */
     BareUserDto patient;
 
 }

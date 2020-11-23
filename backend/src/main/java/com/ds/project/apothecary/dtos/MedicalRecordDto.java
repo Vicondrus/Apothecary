@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
+
 /**
  * The type Medical record dto.
  */
@@ -13,8 +15,9 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class MedicalRecordDto {
+public class MedicalRecordDto implements Serializable {
 
+    private static final long serialVersionUID = -3298839755576320671L;
     /**
      * The Id.
      */

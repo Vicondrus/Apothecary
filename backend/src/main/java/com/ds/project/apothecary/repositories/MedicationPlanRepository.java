@@ -4,6 +4,7 @@ import com.ds.project.apothecary.entities.MedicationPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,4 +21,7 @@ public interface MedicationPlanRepository
      * @return the all by patient id
      */
     List<MedicationPlan> getAllByPatientId(Long id);
+
+    List<MedicationPlan> getAllByPatientIdAndPeriodEndAfterAndPeriodStartBefore(
+            Long patientId, Date date1, Date date2);
 }

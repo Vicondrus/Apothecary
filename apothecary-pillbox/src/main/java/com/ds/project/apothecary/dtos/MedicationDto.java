@@ -1,6 +1,5 @@
 package com.ds.project.apothecary.dtos;
 
-import com.ds.project.apothecary.entities.Medication;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -22,6 +21,7 @@ import java.io.Serializable;
 public class MedicationDto implements Serializable {
 
     private static final long serialVersionUID = 506589207669100153L;
+
     /**
      * The Id.
      */
@@ -51,22 +51,4 @@ public class MedicationDto implements Serializable {
      */
     private String
             dosageUnits;
-
-    /**
-     * Instantiates a new Medication dto.
-     *
-     * @param medication the medication
-     */
-    public MedicationDto(final Medication medication) {
-        this.id =
-                medication.getId();
-        this.name =
-                medication.getName();
-        this.sideEffects =
-                medication.getSideEffects();
-        this.dosage =
-                medication.getDosage();
-        this.dosageUnits =
-                medication.getDosageUnits();
-    }
 }

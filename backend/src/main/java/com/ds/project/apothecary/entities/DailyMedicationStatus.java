@@ -1,11 +1,13 @@
 package com.ds.project.apothecary.entities;
 
+import com.ds.project.apothecary.enums.MedicationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 /**
- * The type Anomalous activity.
+ * The type Daily medication status.
  */
 @Entity
 @Getter
@@ -24,26 +26,24 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnomalousActivity {
+public class DailyMedicationStatus {
 
-    /**
-     * The Id.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long
-            id;
+    private Long id;
 
+    /**
+     * The Medication.
+     */
     @ManyToOne(fetch = FetchType.LAZY,
-            optional = true)
-    @JoinColumn(name = "patient_id")
-    private Patient
-            patient;
+            optional = false,
+            cascade = CascadeType.MERGE)
+    @JoinColumn(name = "medication_plan_details_id",
+            nullable = false)
+    private MedicationPlanDetails
+            medicationPlanDetails;
 
-    private String activity;
+    private MedicationStatus status;
 
-    private Date start_time;
-
-    private Date end_time;
-
+    private Date date;
 }

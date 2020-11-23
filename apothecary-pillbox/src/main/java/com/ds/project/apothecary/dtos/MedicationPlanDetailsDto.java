@@ -1,7 +1,7 @@
 package com.ds.project.apothecary.dtos;
 
-import com.ds.project.apothecary.entities.MedicationPlanDetails;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +17,10 @@ import java.io.Serializable;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class MedicationPlanDetailsDto implements Serializable {
     private static final long serialVersionUID = 5668298128781121469L;
+
     /**
      * The Id.
      */
@@ -39,19 +41,9 @@ public class MedicationPlanDetailsDto implements Serializable {
 
     private Integer intakeIntervalEnd;
 
-    /**
-     * Instantiates a new Medication plan details dto.
-     *
-     * @param medicationPlanDetails the medication plan details
-     */
-    public MedicationPlanDetailsDto(
-            final MedicationPlanDetails medicationPlanDetails) {
-        this.id =
-                medicationPlanDetails.getId();
-        this.intakeInterval =
-                medicationPlanDetails.getIntakeInterval();
-        this.medication =
-                new MedicationDto(medicationPlanDetails.getMedication());
-        this.intakeIntervalEnd = medicationPlanDetails.getIntakeIntervalEnd();
+    @Override public String toString() {
+        return this.medication.getName() + " between " + this.intakeInterval +
+                " and " +
+                this.intakeIntervalEnd + " hours";
     }
 }

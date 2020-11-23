@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 /**
  * The type Medication plan details.
@@ -62,4 +64,10 @@ public class MedicationPlanDetails {
             intakeInterval;
 
     private Integer intakeIntervalEnd;
+
+    @OneToMany(mappedBy = "medicationPlanDetails",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<DailyMedicationStatus>
+            dailyMedicationStatuses;
 }
