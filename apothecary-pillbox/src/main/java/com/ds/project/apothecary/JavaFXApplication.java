@@ -34,6 +34,7 @@ public class JavaFXApplication extends Application {
     public void stop() {
         applicationContext.close();
         Platform.exit();
+        System.exit(0);
     }
 
     @Override

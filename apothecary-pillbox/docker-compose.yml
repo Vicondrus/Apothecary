@@ -1,0 +1,5 @@
+version: "3.0"
+services:
+
+  tomcat-db-api:
+    image: apothecary_pillbox
